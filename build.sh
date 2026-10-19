@@ -22,8 +22,10 @@ else
 fi
 
 echo "== shader compiler tool =="
+# CMAKE_POLICY_VERSION_MINIMUM: the vendored tiny-process-library declares CMake 2.8, which CMake 4 removed.
 cmake -S sdk/tools/ffx_shader_compiler -B sdk/tools/ffx_shader_compiler/build -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release -DCMAKE_HOME_DIRECTORY="$PWD/sdk/tools/ffx_shader_compiler"
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_HOME_DIRECTORY="$PWD/sdk/tools/ffx_shader_compiler" \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 cmake --build sdk/tools/ffx_shader_compiler/build
 
 export FFX_SC_EXECUTABLE="$PWD/sdk/tools/ffx_shader_compiler/bin/FidelityFX_SC"
@@ -31,7 +33,7 @@ export FFX_SC_EXECUTABLE="$PWD/sdk/tools/ffx_shader_compiler/bin/FidelityFX_SC"
 echo "== amd_fidelityfx_vk =="
 cmake -S ffx-api -B ffx-api/build -G Ninja -DCMAKE_BUILD_TYPE=Release \
     -DFFX_API_BACKEND=VK_X64 -DCMAKE_HOME_DIRECTORY="$PWD/ffx-api" \
-    -DCMAKE_PREFIX_PATH="$(brew --prefix)"
+    -DCMAKE_PREFIX_PATH="$(brew --prefix)" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 cmake --build ffx-api/build
 
 cd ..
