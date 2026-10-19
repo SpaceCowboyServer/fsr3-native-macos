@@ -72,6 +72,40 @@ index e136191..a0189fe 100644
  #include <stdint.h>
  
  enum FfxApiReturnCodes
+diff --git a/ffx-api/src/ffx_framegeneration_stubs.cpp b/ffx-api/src/ffx_framegeneration_stubs.cpp
+new file mode 100644
+index 0000000..2f9a9a2
+--- /dev/null
++++ b/ffx-api/src/ffx_framegeneration_stubs.cpp
+@@ -0,0 +1,28 @@
++// MIT, part of the macOS port of the FidelityFX SDK build.
++//
++// The frame-generation (frame interpolation) component and its Windows-bound VK swapchain are not
++// built on this platform (see sdk/CMakeLists.txt and backends/vk/CMakeLists.txt). The ffx-api layer
++// still references their entry points unconditionally (the frame generation provider is registered
++// in the provider list), so they are defined here returning graceful errors. Upscale contexts never
++// reach any of these: their providers are the FSR3 upscaler and FSR2.
++
++#include <FidelityFX/host/ffx_frameinterpolation.h>
++#include <FidelityFX/host/backends/vk/ffx_vk.h>
++
++FFX_API FfxErrorCode ffxFrameInterpolationContextCreate(FfxFrameInterpolationContext*, FfxFrameInterpolationContextDescription*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationContextDestroy(FfxFrameInterpolationContext*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationContextGetGpuMemoryUsage(FfxFrameInterpolationContext*, FfxEffectMemoryUsage*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationGetSharedResourceDescriptions(FfxFrameInterpolationContext*, FfxFrameInterpolationSharedResourceDescriptions*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationPrepare(FfxFrameInterpolationContext*, const FfxFrameInterpolationPrepareDescription*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationDispatch(FfxFrameInterpolationContext*, const FfxFrameInterpolationDispatchDescription*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationSetGlobalDebugMessage(ffxMessageCallback, uint32_t) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxSharedContextGetGpuMemoryUsage(FfxInterface*, FfxEffectMemoryUsage*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxWaitForPresents(FfxSwapchain) { return FFX_ERROR_INVALID_VERSION; }
++
++FFX_API FfxErrorCode ffxConfigureFrameInterpolationSwapchainVK(FfxSwapchain, FfxFrameInterpolationSwapchainConfigureKey, void*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxFrameInterpolationSwapchainGetGpuMemoryUsageVK(FfxSwapchain, FfxEffectMemoryUsage*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxGetFrameinterpolationCommandlistVK(FfxSwapchain, FfxCommandList&) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxResource ffxGetFrameinterpolationTextureVK(FfxSwapchain) { return FfxResource{}; }
++FFX_API FfxErrorCode ffxGetSwapchainReplacementFunctionsVK(FfxDevice, FfxSwapchainReplacementFunctions*) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxRegisterFrameinterpolationUiResourceVK(FfxSwapchain, FfxResource, uint32_t) { return FFX_ERROR_INVALID_VERSION; }
++FFX_API FfxErrorCode ffxReplaceSwapchainForFrameinterpolationVK(FfxCommandQueue, FfxSwapchain&, const VkSwapchainCreateInfoKHR*, const VkFrameInterpolationInfoFFX*) { return FFX_ERROR_INVALID_VERSION; }
 diff --git a/ffx-api/src/ffx_provider.cpp b/ffx-api/src/ffx_provider.cpp
 index d7c0e64..3797a35 100644
 --- a/ffx-api/src/ffx_provider.cpp
