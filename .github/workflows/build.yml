@@ -7,6 +7,8 @@ jobs:
   dylib:
     runs-on: macos-14
     timeout-minutes: 60
+    permissions:
+      contents: write   # the tag release step publishes the dylib
     steps:
       - uses: actions/checkout@v4
       - run: brew install glslang ninja vulkan-loader
